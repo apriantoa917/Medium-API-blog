@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDIUM API BLOGS</title>
+</head>
+
+<body>
+    <p>>>> You can get your blog publication data from the medium into your website by calling the API of the medium user.</p>
+    <h3>User account : @<input id="medium_username" type="text" value="MediumStaff"> <button onclick="load()">Load</button></h3>
+    <hr>
+    <div id="content"></div>
+    <footer>
+        <center>&copy; 2021 - Aprianto | <a href="https://github.com/apriantoa917">Github</a></center>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        load()
+
+        function load() {
+            var username = $('#medium_username').val() // you can define username or put from input field
+            var api_url = `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@${username}` // this API url for get JSON data from username medium account
+
+            $(".items").remove(); // remove child after resubmitting username
+
+            // this code for getting data from API url
+            fetch(api_url)
+                .then((res) => res.json())
+                .then((data) => {
+                    const res = data.items; // this is JSON publication data
+                    console.log(res);
+
+                    // print every row data from JSON
+                    res.forEach(element => {
+                        posts = `<div class="items">Title : ${element.title} | author : ${element.author} | Published on : ${element.pubDate} | <a href="${element.link}" target="_blank">Open Publication</a> <hr></div>`
+                        $("#content").append(posts);
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
